@@ -71,8 +71,7 @@ whatsapp-bot/
 │   └── index.js                # Entry point for the app
 │
 ├── package.json
-├── package-lock.json
-└── .env                        # Environment variables (optional)
+└── package-lock.json
 ```
 
 ## Running the Project (Backend)
@@ -83,3 +82,4 @@ To run the backend of the WhatsApp bot, follow these steps:
     ```bash
     npm start
     ```
+2. The QR code will be displayed in the terminal upon startup. From that moment onward, the QR code will be regenerated every ´30 seconds` until it's scanned with your mobile device. To authorize the client, open WhatsApp on your phone, go to the settings, and scan the QR code. After the scan, the client should be authorized, and you'll see a Client is ready! message printed out in the terminal.
