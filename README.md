@@ -9,6 +9,7 @@ A simple HTTP server built with Node.js using the [whatsapp-web.js](https://gith
 -   [Installation](#installation)
 -   [Usage](#usage)
 -   [Project Structure](#project-structure)
+-   [Running the project](#running-the-project)
 
 ## Introduction
 
@@ -73,3 +74,12 @@ whatsapp-bot/
 ├── package-lock.json
 └── .env                        # Environment variables (optional)
 ```
+
+## Running the Project (Backend)
+
+To run the backend of the WhatsApp bot, follow these steps:
+
+1. Start the server:
+    ```bash
+    npm start
+    ```
