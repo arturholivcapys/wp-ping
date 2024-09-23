@@ -2,6 +2,8 @@
 
 A simple HTTP server built with Node.js using the [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) library for automating interactions with WhatsApp.
 
+Created By [Artur Holiv](https://github.com/arturholiv)
+
 ## Table of Contents
 
 -   [Introduction](#introduction)
