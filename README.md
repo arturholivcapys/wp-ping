@@ -15,7 +15,7 @@ Created By [Artur Holiv](https://github.com/arturholiv)
 
 ## Introduction
 
-`wp-ping` is a Node.js server that leverages the `whatsapp-web.js` library to automate messaging and other interactions via WhatsApp. This bot can be used for various automation purposes, such as sending messages, receiving messages, and responding to specific events on WhatsApp.
+`wp-ping` is a Node.js server that leverages the `whatsapp-web.js` library to automate messaging and other interactions via WhatsApp. This api will be used for various automation purposes, such as sending messages, receiving messages, and responding to specific events on WhatsApp.
 
 ## Features
 
