@@ -9,6 +9,7 @@ const {
     getChat,
     getMessageId,
     getChatIdByPhoneNumber,
+    getMessagesByChatId,
 } = require("../controllers/messageController");
 
 const router = express.Router();
@@ -22,5 +23,5 @@ router.post("/reply", replyToMessage);
 router.get("/chat/:messageId", getChat);
 router.get("/id/:from/:body", getMessageId);
 router.get("/chat-id/:number", getChatIdByPhoneNumber);
-
+router.get("/chat-id/:chatId", getMessagesByChatId);
 module.exports = router;
