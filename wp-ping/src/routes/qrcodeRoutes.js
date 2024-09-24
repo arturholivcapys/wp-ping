@@ -3,6 +3,6 @@ const { getQRCode } = require("../controllers/qrCodeController");
 
 const router = express.Router();
 
-router.get("/get-qr-code", getQRCode);
+router.get("/get", getQRCode);
 
 module.exports = router;

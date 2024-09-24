@@ -13,22 +13,14 @@ const {
 
 const router = express.Router();
 
-router.post("/send-message", sendMessage);
-
-router.get("/get-messages", getMessages);
-
-router.get("/get-teste", getTeste);
-
-router.delete("/delete-message", deleteMessage);
-
-router.put("/edit-message", editMessage);
-
-router.post("/reply-message", replyToMessage);
-
-router.get("/get-chat/:messageId", getChat);
-
-router.get("/get-message-id/:from/:body", getMessageId);
-
-router.get("/get-chat-id/:number", getChatIdByPhoneNumber);
+router.post("/send", sendMessage);
+router.get("/message", getMessages);
+router.get("/teste", getTeste);
+router.delete("/delete", deleteMessage);
+router.put("/edit", editMessage);
+router.post("/reply", replyToMessage);
+router.get("/chat/:messageId", getChat);
+router.get("/id/:from/:body", getMessageId);
+router.get("/chat-id/:number", getChatIdByPhoneNumber);
 
 module.exports = router;
