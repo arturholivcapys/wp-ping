@@ -1,4 +1,4 @@
-const { client } = require("../config/client");
+const { client } = require("../config");
 
 let messages = [];
 
