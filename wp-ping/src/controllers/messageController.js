@@ -122,7 +122,41 @@ const getChat = async (req, res) => {
     try {
         const message = await client.getMessageById(messageId);
         const chat = await message.getChat();
-        res.status(200).send({ success: true, chat });
+
+        const chatInfo = {
+            id: chat.id._serialized,
+            name: chat.name,
+            isGroup: chat.isGroup,
+            timestamp: chat.timestamp,
+        };
+
+        const messageInfo = {
+            id: message.id._serialized,
+            body: message.body,
+            from: message.from,
+            timestamp: message.timestamp,
+            hasMedia: message.hasMedia,
+            type: message.type,
+            author: message.author,
+            isForwarded: message.isForwarded,
+            forwardingScore: message.forwardingScore,
+            isStatus: message.isStatus,
+            isStarred: message.isStarred,
+            broadcast: message.broadcast,
+            fromMe: message.fromMe,
+            hasQuotedMsg: message.hasQuotedMsg,
+            vCards: message.vCards,
+            mentionedIds: message.mentionedIds,
+            isGif: message.isGif,
+            isEphemeral: message.isEphemeral,
+            links: message.links,
+        };
+
+        res.status(200).send({
+            success: true,
+            chat: chatInfo,
+            message: messageInfo,
+        });
     } catch (error) {
         res.status(500).send({ success: false, error: error.message });
     }
