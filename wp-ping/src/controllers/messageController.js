@@ -3,16 +3,39 @@ const { client } = require("../config");
 let messages = [];
 
 // Evento disparado quando uma nova mensagem é criada
-client.on("message_create", (message) => {
+client.on("message_create", async (message) => {
     console.log("Número:", message.from);
     console.log("Mensagem:", message.body);
 
-    // Armazena a mensagem recebida no array
-    messages.push(message);
+    try {
+        const chat = await message.getChat();
 
-    if (message.body.trim().toLowerCase() === "!ping") {
-        // Piing
-        client.sendMessage(message.from, "pong");
+        // Criando um objeto com informações da mensagem e do chat
+        const messageWithChat = {
+            id: message.id._serialized,
+            body: message.body,
+            from: message.from,
+            timestamp: message.timestamp,
+            type: message.type,
+            hasMedia: message.hasMedia,
+            chat: {
+                id: chat.id._serialized,
+                name: chat.name,
+                isGroup: chat.isGroup,
+                timestamp: chat.timestamp,
+            },
+        };
+
+        // Adicionando a mensagem com informações do chat ao array
+        messages.push(messageWithChat);
+
+        console.log("Mensagem com chat:", messageWithChat);
+
+        if (message.body.trim().toLowerCase() === "!ping") {
+            await client.sendMessage(message.from, "pong");
+        }
+    } catch (error) {
+        console.error("Erro ao processar mensagem:", error);
     }
 });
 
