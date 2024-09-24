@@ -24,6 +24,8 @@ client.on("message_create", async (message) => {
                 isGroup: chat.isGroup,
                 timestamp: chat.timestamp,
             },
+            mediaData: message.hasMedia ? await message.downloadMedia() : null,
+            caption: message.caption || null,
         };
 
         // Adicionando a mensagem com informações do chat ao array
@@ -150,6 +152,8 @@ const getChat = async (req, res) => {
             isGif: message.isGif,
             isEphemeral: message.isEphemeral,
             links: message.links,
+            mediaData: message.hasMedia ? await message.downloadMedia() : null,
+            caption: message.caption || null,
         };
 
         res.status(200).send({
