@@ -1,0 +1,210 @@
+{
+    "info": {
+      "name": "wp-ping API",
+      "_postman_id": "unique-id-here",
+      "description": "API endpoints for wp-ping WhatsApp automation",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Messages",
+        "item": [
+          {
+            "name": "Send Message",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/send",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "send"]
+              }
+            }
+          },
+          {
+            "name": "Get All Messages",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/message",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "message"]
+              }
+            }
+          },
+          {
+            "name": "Delete Message",
+            "request": {
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/delete",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "delete"]
+              }
+            }
+          },
+          {
+            "name": "Edit Message",
+            "request": {
+              "method": "PUT",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/edit",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "edit"]
+              }
+            }
+          },
+          {
+            "name": "Reply to Message",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/reply",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "reply"]
+              }
+            }
+          },
+          {
+            "name": "Get Chat Info",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/chat/:messageId",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "chat", ":messageId"],
+                "variable": [
+                  {
+                    "key": "messageId",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Message ID",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/id/:from/:body",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "id", ":from", ":body"],
+                "variable": [
+                  {
+                    "key": "from",
+                    "value": ""
+                  },
+                  {
+                    "key": "body",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Chat ID by Phone Number",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/chat-id/:number",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "chat-id", ":number"],
+                "variable": [
+                  {
+                    "key": "number",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Messages by Chat ID",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/messages/chat-id/:chatId",
+                "host": ["{{base_url}}"],
+                "path": ["api", "messages", "chat-id", ":chatId"],
+                "variable": [
+                  {
+                    "key": "chatId",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Chats",
+        "item": [
+          {
+            "name": "Get Contact Info",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/chat/:chatId/contact",
+                "host": ["{{base_url}}"],
+                "path": ["api", "chat", ":chatId", "contact"],
+                "variable": [
+                  {
+                    "key": "chatId",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Chat Messages",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/chat/:chatId/messages",
+                "host": ["{{base_url}}"],
+                "path": ["api", "chat", ":chatId", "messages"],
+                "variable": [
+                  {
+                    "key": "chatId",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Send Message to Chat",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/api/chat/:chatId/send",
+                "host": ["{{base_url}}"],
+                "path": ["api", "chat", ":chatId", "send"],
+                "variable": [
+                  {
+                    "key": "chatId",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
