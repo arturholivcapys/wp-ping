@@ -21,6 +21,10 @@ const fetchMessages = async (req, res) => {
     const { chatId } = req.params;
     const { limit } = req.query;
     try {
+
+        if (!chatId.endsWith("@c.us")) {
+            chatId = chatId + "@c.us";
+        }
         const chat = await client.getChatById(chatId);
         const messages = await chat.fetchMessages({
             limit: parseInt(limit) || 50,
