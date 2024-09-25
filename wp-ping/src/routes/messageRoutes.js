@@ -11,10 +11,10 @@ const {
     getChatIdByPhoneNumber,
     getMessagesByChatId,
 } = require("../controllers/messageController");
-
+const { ensureClientReady } = require("../config");
 const router = express.Router();
 
-router.post("/send", sendMessage);
+router.post("/send", ensureClientReady, sendMessage);
 router.get("/message", getMessages);
 router.get("/teste", getTeste);
 router.delete("/delete", deleteMessage);
