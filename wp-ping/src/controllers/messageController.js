@@ -1,4 +1,7 @@
 const { client } = require("../config");
+const { MessageMedia } = require('whatsapp-web.js');
+const axios = require('axios');
+const mime = require('mime-types');
 
 let messages = [];
 
@@ -41,37 +44,75 @@ client.on("message_create", async (message) => {
     }
 });
 
-// Função para enviar mensagem via API
-const sendMessage = (req, res) => {
-    console.log("Requisição recebida:", req.body);
+const sendMessage = async (req, res) => {
+    console.log("Requisição recebida:", JSON.stringify(req.body, null, 2));
 
-    // Validação básica da entrada
-    const { number, message } = req.body;
-    if (!number || !message) {
+    const { number, message, fileUrl, fileName, contentType, options } = req.body;
+
+    if (!number || (!message && !fileUrl)) {
         return res.status(400).send({
             success: false,
-            error: "Número e mensagem são obrigatórios.",
+            error: "Número e mensagem ou URL do arquivo são obrigatórios.",
         });
     }
 
-    // Envia a mensagem para o número especificado
-    const chatId = `${number}@c.us`; // Formata o número para o padrão do WhatsApp
+    const chatId = `${number}@c.us`;
 
-    client
-        .sendMessage(chatId, message)
-        .then((response) =>
-            res.status(200).send({
-                success: true,
-                message: "Mensagem enviada com sucesso.",
-                response,
-            })
-        )
-        .catch((err) =>
-            res.status(500).send({
-                success: false,
-                error: `Erro ao enviar a mensagem: ${err.message}`,
-            })
-        );
+    try {
+        console.log("Preparando para enviar mensagem para:", chatId);
+        let content;
+        let sendOptions = options || {};
+
+        if (fileUrl) {
+            console.log("Tentando baixar mídia da URL:", fileUrl);
+            try {
+                // Tenta determinar o tipo MIME a partir da extensão do arquivo
+                const detectedMimeType = mime.lookup(fileName) || contentType || 'application/octet-stream';
+                
+                // Baixa o conteúdo do arquivo
+                const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
+                const buffer = Buffer.from(response.data, 'binary');
+                
+                // Cria o objeto MessageMedia
+                const media = new MessageMedia(detectedMimeType, buffer.toString('base64'), fileName);
+                console.log("Mídia baixada com sucesso");
+                content = media;
+                sendOptions.caption = message; // Usa a mensagem como legenda para a mídia
+            } catch (mediaError) {
+                console.error("Erro ao baixar mídia:", mediaError);
+                return res.status(400).send({
+                    success: false,
+                    error: `Erro ao baixar mídia: ${mediaError.message}`,
+                });
+            }
+        } else {
+            content = message;
+        }
+
+        console.log("Enviando mensagem");
+        const response = await client.sendMessage(chatId, content, sendOptions);
+        console.log("Mensagem enviada com sucesso");
+
+        res.status(200).send({
+            success: true,
+            message: "Mensagem enviada com sucesso.",
+            response: {
+                id: response.id._serialized,
+                timestamp: response.timestamp,
+                from: response.from,
+                to: response.to,
+                hasMedia: response.hasMedia,
+                type: response.type
+            }
+        });
+    } catch (err) {
+        console.error("Erro ao enviar mensagem:", err);
+        res.status(500).send({
+            success: false,
+            error: `Erro ao enviar a mensagem: ${err.message}`,
+            stack: err.stack
+        });
+    }
 };
 
 // Função para obter todas as mensagens recebidas
