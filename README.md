@@ -1,6 +1,6 @@
 # wp-ping
 
-A robust RESTful API built with Node.js for automating WhatsApp interactions, using the [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) library.
+A RESTful API built with Node.js for automating WhatsApp interactions, using the [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) library.
 
 Created by [Artur Holiv](https://github.com/arturholiv)
 
