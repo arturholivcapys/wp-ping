@@ -1,7 +1,8 @@
 const { client } = require("../config");
-const { MessageMedia } = require('whatsapp-web.js');
-const axios = require('axios');
-const mime = require('mime-types');
+const { MessageMedia } = require("whatsapp-web.js");
+const axios = require("axios");
+const https = require("https");
+const mime = require("mime-types");
 
 let messages = [];
 
@@ -33,6 +34,9 @@ client.on("message_create", async (message) => {
 
         // Adicionando a mensagem com informações do chat ao array
         messages.push(messageWithChat);
+        if (messageWithChat.id.startsWith("false")) {
+            await notifyExternalAPI(messageWithChat);
+        }
 
         console.log("Mensagem com chat:", messageWithChat);
 
@@ -44,10 +48,41 @@ client.on("message_create", async (message) => {
     }
 });
 
+const notifyExternalAPI = async (messageWithChat) => {
+    try {
+        const payload = {
+            From: `5531999146175`,
+            To: `${messageWithChat.from}`,
+            Body: messageWithChat.body,
+        };
+
+        const httpsAgent = new https.Agent({
+            rejectUnauthorized: false,
+        });
+
+        const response = await axios.post(
+            "https://localhost:44300/api/v1/helpdesk/twilio/ReceberMensagemArt",
+            payload,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer ZZZZZZZZZZ",
+                },
+                httpsAgent: httpsAgent,
+            }
+        );
+
+        console.log("Notificação enviada com sucesso:", response.data);
+    } catch (error) {
+        console.error("Erro ao enviar notificação para API externa:", error);
+    }
+};
+
 const sendMessage = async (req, res) => {
     console.log("Requisição recebida:", JSON.stringify(req.body, null, 2));
 
-    const { number, message, fileUrl, fileName, contentType, options } = req.body;
+    const { number, message, fileUrl, fileName, contentType, options } =
+        req.body;
 
     if (!number || (!message && !fileUrl)) {
         return res.status(400).send({
@@ -67,14 +102,23 @@ const sendMessage = async (req, res) => {
             console.log("Tentando baixar mídia da URL:", fileUrl);
             try {
                 // Tenta determinar o tipo MIME a partir da extensão do arquivo
-                const detectedMimeType = mime.lookup(fileName) || contentType || 'application/octet-stream';
-                
+                const detectedMimeType =
+                    mime.lookup(fileName) ||
+                    contentType ||
+                    "application/octet-stream";
+
                 // Baixa o conteúdo do arquivo
-                const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
-                const buffer = Buffer.from(response.data, 'binary');
-                
+                const response = await axios.get(fileUrl, {
+                    responseType: "arraybuffer",
+                });
+                const buffer = Buffer.from(response.data, "binary");
+
                 // Cria o objeto MessageMedia
-                const media = new MessageMedia(detectedMimeType, buffer.toString('base64'), fileName);
+                const media = new MessageMedia(
+                    detectedMimeType,
+                    buffer.toString("base64"),
+                    fileName
+                );
                 console.log("Mídia baixada com sucesso");
                 content = media;
                 sendOptions.caption = message; // Usa a mensagem como legenda para a mídia
@@ -102,15 +146,15 @@ const sendMessage = async (req, res) => {
                 from: response.from,
                 to: response.to,
                 hasMedia: response.hasMedia,
-                type: response.type
-            }
+                type: response.type,
+            },
         });
     } catch (err) {
         console.error("Erro ao enviar mensagem:", err);
         res.status(500).send({
             success: false,
             error: `Erro ao enviar a mensagem: ${err.message}`,
-            stack: err.stack
+            stack: err.stack,
         });
     }
 };
